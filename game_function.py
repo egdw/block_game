@@ -70,6 +70,10 @@ def update_block(group, blocks, controller):
         else:
             key.make_turn(True)
         # 移除砖块
+        for v in value:
+            # 如果是不能损毁的砖块移除
+            if v.destory == False:
+                value.remove(v)
         blocks.remove(value)
 
     dic2 = pygame.sprite.groupcollide(group, controller, False, False)

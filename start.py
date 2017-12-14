@@ -6,6 +6,7 @@ from Controller import Controller
 import game_function as gf
 from  pygame.sprite import Group
 from block import Block
+import random
 
 
 def run_game():
@@ -15,8 +16,13 @@ def run_game():
     screen = pygame.display.set_mode((settings.screen_width, settings.screen_height))
     controller = Controller(screen, settings)
     blocks = Group()
-    for x in range(100):
+    for x in range(settings.block_count):
         block = Block(settings, screen)
+        ran = random.randint(0, 100)
+        if ran < settings.destory_occurrence_rate:
+            # 15 % 的概率生成无法破坏的砖块
+            block.destory = False
+            block.color = (120, 120, 120)
         blocks.add(block)
     pygame.display.set_caption("block_game")
     group = Group()

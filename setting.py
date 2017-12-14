@@ -27,3 +27,9 @@ class Settings():
         self.block_width = 15
         # 砖块的高度
         self.block_height = 15
+
+        # 不能损坏砖块出现比例(最大99)
+        self.destory_occurrence_rate = 15
+
+        # 砖块数量
+        self.block_count = 100
