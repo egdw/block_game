@@ -32,8 +32,8 @@ class Settings():
         self.destory_occurrence_rate = 15
 
         # 砖块数量
-        self.block_count = 100
+        self.block_count = 200
 
-        #奖励出现比例
-        self.aware_occurrence_rate = 50
+        # 奖励出现比例
+        self.aware_occurrence_rate = 3
         self.aware_down_speed = 10

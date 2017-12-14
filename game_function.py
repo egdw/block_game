@@ -66,7 +66,7 @@ def update_screen(settings, screen, controller, group, blocks, awards):
 
 
 # 消除砖块
-def update_block(group, blocks, controllers, awards, settings, screen,controller):
+def update_block(group, blocks, controllers, awards, settings, screen, controller, game_contiune):
     # 判断当前的球是否与砖块发生碰撞,如果发生碰撞.进行角度的转换
     dic = pygame.sprite.groupcollide(group, blocks, False, False)
     # 返回的是字典.进行遍历操作
@@ -111,9 +111,19 @@ def update_block(group, blocks, controllers, awards, settings, screen,controller
                     group.add(ball)
             else:
                 # 发射三个
+                for index in range(3):
+                    new_ball = Ball(settings=settings, screen=screen, controller=controller)
+                    new_ball.setX_Y(controller.rect.centerx, controller.rect.centery, index)
+                    group.add(new_ball)
                 print("send three")
         awards.remove(value)
 
-    if len(blocks) == 0:
+    is_game_over = False
+    for block in blocks:
+        if block.destory:
+            is_game_over = False
+        else:
+            is_game_over = True
+    if is_game_over:
         # 说明砖块全部没有了
         print("game over!")

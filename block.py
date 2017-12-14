@@ -9,8 +9,8 @@ class Block(Sprite):
         self.settings = settings
         self.screen = screen
         self.destory = True
-        self.rect = pygame.Rect(random.randint(0, settings.screen_width),
-                                random.randint(0, settings.screen_height - 200),
+        self.rect = pygame.Rect(random.randint(settings.block_width, settings.screen_width - settings.block_width),
+                                random.randint(settings.block_height, settings.screen_height - 200),
                                 settings.block_width, settings.block_height)
 
         # 每个砖块最初都在屏幕左上角附近

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import sys
+from threading import Thread
+
 import pygame
 from setting import Settings
 from Controller import Controller
@@ -34,14 +36,15 @@ def run_game():
     # 用于存放奖励
     awards = Group()
     # 进行循环判断当前的状态
-    while True:
+    game_contiune = True
+    while game_contiune:
         gf.check_event(controller, group, settings, screen)
         controller.update()
         gf.update_screen(settings, screen, controller, group, blocks, awards)
         group.update()
         # awards.update()
-        gf.update_block(group=group, blocks=blocks, controllers=controllers, awards=awards, settings=settings,
-                        screen=screen, controller=controller)
-
+        gf.update_block(group=group, blocks=blocks, controllers=controllers, awards=awards,
+                                        settings=settings,
+                                        screen=screen, controller=controller, game_contiune=game_contiune)
 
 run_game()
