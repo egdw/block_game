@@ -15,7 +15,7 @@ def run_game():
     screen = pygame.display.set_mode((settings.screen_width, settings.screen_height))
     controller = Controller(screen, settings)
     blocks = Group()
-    for x in range(200):
+    for x in range(100):
         block = Block(settings, screen)
         blocks.add(block)
     pygame.display.set_caption("block_game")

@@ -8,6 +8,7 @@ class Block(Sprite):
         super().__init__()
         self.settings = settings
         self.screen = screen
+        self.destory = True
         self.rect = pygame.Rect(random.randint(0, settings.screen_width),
                                 random.randint(0, settings.screen_height - 200),
                                 settings.block_width, settings.block_height)

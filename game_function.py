@@ -18,6 +18,18 @@ def check_event(controller, group, settings, screen):
                     # 说明当前没有球.可以进行发射
                     new_bullet = Ball(settings=settings, screen=screen, controller=controller)
                     group.add(new_bullet)
+            elif event.key == pygame.K_f:
+                temp_list = []
+                for ball in group:
+                    for index in range(3):
+                        new_ball = Ball(settings=settings, screen=screen, controller=controller)
+                        new_ball.setX_Y(ball.x, ball.y, index)
+                        temp_list.append(new_ball)
+
+                # 完成分裂之后.再添加到group当中
+                for ball in temp_list:
+                    group.add(ball)
+                print(temp_list)
 
 
         elif event.type == pygame.KEYUP:
@@ -47,23 +59,23 @@ def update_screen(settings, screen, controller, group, blocks):
 
 # 消除砖块
 def update_block(group, blocks, controller):
-    for ball in group:
-        if pygame.sprite.spritecollideany(ball, blocks):
-            # 判断当前的球是否与砖块发生碰撞,如果发生碰撞.进行角度的转换
-            dic = pygame.sprite.groupcollide(group, blocks, False, False)
-            print(dic)
-            # for block in blocks:
-            #     if pygame.sprite.spritecollideany(block, group):
-            #         if (block.rect.bottom - ball.rect.bottom) > 5 or (block.rect.bottom - ball.rect.bottom) < -5:
-            #             ball.make_turn(2)
-            #             break;
-            #         else:
-            ball.make_turn(True)
+    # 判断当前的球是否与砖块发生碰撞,如果发生碰撞.进行角度的转换
+    dic = pygame.sprite.groupcollide(group, blocks, False, False)
+    # 返回的是字典.进行遍历操作
+    # {<Ball sprite(in 1 groups)>: [<Block sprite(in 1 groups)>]}
+    for key, value in dic.items():
+        if (key.rect.top < value[0].rect.top) or (key.rect.bottom > value[0].rect.bottom):
+            # 说明接触面在上面或下面
+            key.make_turn(2)
+        else:
+            key.make_turn(True)
+        # 移除砖块
+        blocks.remove(value)
 
-        if pygame.sprite.spritecollideany(ball, controller):
-            # 判断当前的控制器是否与球发生碰撞
-            ball.make_turn(2)
-
+    dic2 = pygame.sprite.groupcollide(group, controller, False, False)
+    for key, value in dic2.items():
+        key.make_turn(2)
+        # ball.make_turn(2)
     if len(blocks) == 0:
         # 说明砖块全部没有了
         print("game over!")
