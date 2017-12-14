@@ -33,3 +33,7 @@ class Settings():
 
         # 砖块数量
         self.block_count = 100
+
+        #奖励出现比例
+        self.aware_occurrence_rate = 50
+        self.aware_down_speed = 10

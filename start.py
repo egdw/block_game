@@ -15,6 +15,7 @@ def run_game():
     pygame.init()
     screen = pygame.display.set_mode((settings.screen_width, settings.screen_height))
     controller = Controller(screen, settings)
+    # 用于存放所有的砖块
     blocks = Group()
     for x in range(settings.block_count):
         block = Block(settings, screen)
@@ -25,17 +26,22 @@ def run_game():
             block.color = (120, 120, 120)
         blocks.add(block)
     pygame.display.set_caption("block_game")
+    # 用于存放所有的弹球
     group = Group()
     # 存放控制器的iterator
     controllers = Group()
     controllers.add(controller)
+    # 用于存放奖励
+    awards = Group()
     # 进行循环判断当前的状态
     while True:
         gf.check_event(controller, group, settings, screen)
         controller.update()
-        gf.update_screen(settings, screen, controller, group, blocks)
+        gf.update_screen(settings, screen, controller, group, blocks, awards)
         group.update()
-        gf.update_block(group, blocks, controllers)
+        # awards.update()
+        gf.update_block(group=group, blocks=blocks, controllers=controllers, awards=awards, settings=settings,
+                        screen=screen, controller=controller)
 
 
 run_game()

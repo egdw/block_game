@@ -1,6 +1,8 @@
 import sys
 import pygame
 from  ball import Ball
+import random
+from award import Award
 
 
 def check_event(controller, group, settings, screen):
@@ -39,7 +41,8 @@ def check_event(controller, group, settings, screen):
                 controller.moving_left = False
 
 
-def update_screen(settings, screen, controller, group, blocks):
+# 用于更新屏幕
+def update_screen(settings, screen, controller, group, blocks, awards):
     screen.fill(settings.screen_bg)
     controller.blitme()
     for ball in group:
@@ -54,11 +57,16 @@ def update_screen(settings, screen, controller, group, blocks):
 
     for block in blocks:
         block.blitme()
+
+    for award in awards:
+        award.blitme(screen)
+        award.update()
+
     pygame.display.flip()
 
 
 # 消除砖块
-def update_block(group, blocks, controller):
+def update_block(group, blocks, controllers, awards, settings, screen,controller):
     # 判断当前的球是否与砖块发生碰撞,如果发生碰撞.进行角度的转换
     dic = pygame.sprite.groupcollide(group, blocks, False, False)
     # 返回的是字典.进行遍历操作
@@ -74,12 +82,38 @@ def update_block(group, blocks, controller):
             # 如果是不能损毁的砖块移除
             if v.destory == False:
                 value.remove(v)
+            else:
+                if random.randint(0, 100) <= settings.aware_occurrence_rate:
+                    new_award = Award(settings, screen, v)
+                    awards.add(new_award)
+
         blocks.remove(value)
 
-    dic2 = pygame.sprite.groupcollide(group, controller, False, False)
+    dic2 = pygame.sprite.groupcollide(group, controllers, False, False)
     for key, value in dic2.items():
         key.make_turn(2)
         # ball.make_turn(2)
+
+    dic3 = pygame.sprite.groupcollide(controllers, awards, False, False)
+    for key, value in dic3.items():
+        for v in value:
+            if v.flag:
+                # 分裂
+                temp_list = []
+                for ball in group:
+                    for index in range(3):
+                        new_ball = Ball(settings=settings, screen=screen, controller=controller)
+                        new_ball.setX_Y(ball.x, ball.y, index)
+                        temp_list.append(new_ball)
+
+                # 完成分裂之后.再添加到group当中
+                for ball in temp_list:
+                    group.add(ball)
+            else:
+                # 发射三个
+                print("send three")
+        awards.remove(value)
+
     if len(blocks) == 0:
         # 说明砖块全部没有了
         print("game over!")
