@@ -11,12 +11,17 @@ class Award(Sprite):
         self.screen = screen
         self.flag = False
         if random.randint(0, 1) == 0:
-            self.image = pygame.image.load('images/pic1.png')
+            # self.image = pygame.image.load('./pic1.png')
+            self.color = (255, 0, 0)
             self.flag = True
         else:
-            self.image = pygame.image.load('images/pic2.png')
+            # self.image = pygame.image.load('./pic2.png')
+            self.color = (255, 255, 0)
             self.flag = False
-        self.rect = self.image.get_rect()
+        self.rect = pygame.Rect(block.rect.left,
+                                block.rect.top,
+                                settings.block_width, settings.block_height)
+        # self.rect = self.image.get_rect()
         self.screen = screen.get_rect()
         self.x = float(block.rect.left)
         self.y = float(block.rect.top)
@@ -24,7 +29,9 @@ class Award(Sprite):
         self.rect.y = self.y
 
     def blitme(self, screen):
-        screen.blit(self.image, self.rect)
+        # screen.blit(self.image, self.rect)
+        pygame.draw.rect(screen, self.color, self.rect)
 
     def update(self, *args):
         self.rect.y = self.rect.y + self.settings.aware_down_speed
+

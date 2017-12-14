@@ -117,13 +117,3 @@ def update_block(group, blocks, controllers, awards, settings, screen, controlle
                     group.add(new_ball)
                 print("send three")
         awards.remove(value)
-
-    is_game_over = False
-    for block in blocks:
-        if block.destory:
-            is_game_over = False
-        else:
-            is_game_over = True
-    if is_game_over:
-        # 说明砖块全部没有了
-        print("game over!")
